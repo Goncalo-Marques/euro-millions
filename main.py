@@ -1,3 +1,4 @@
+from datetime import datetime
 from multiprocessing import Array, Lock, Process, Semaphore, Value
 import random
 from threading import Thread
@@ -164,6 +165,7 @@ def server() -> None:
     log.log_info("starting the betting stage")
 
     registered_bets: Dict[int, List[int]] = {}
+    start_time = datetime.now()
 
     # wait for new bets
     while True:
@@ -194,15 +196,22 @@ def server() -> None:
                 )
             )
 
-        # TODO: if wait time reaches, close server and break
-
-        # all bets were registered
-        if len(registered_bets) == NUM_PLAYERS:
-            log.log_info("all players have already placed their bets")
+        # check if the cycle should be interrupted
+        if are_bets_closed():
+            log.log_info("closing the betting stage")
             break
 
-    log.log_info("closing the betting stage")
-    close_bets()
+        # check that the maximum waiting time has been reached
+        time_since_start = datetime.now() - start_time
+        time_since_start = time_since_start.total_seconds()
+        if time_since_start >= MAX_WAIT_TIME:
+            log.log_info("the maximum waiting time has been reached")
+            close_bets()
+
+        # check if all bets have been registered
+        if len(registered_bets) == NUM_PLAYERS:
+            log.log_info("all players have already placed their bets")
+            close_bets()
 
     # generate key
     key = Key(
@@ -270,7 +279,7 @@ def client(index: int) -> None:
 
     # use the first three players to simulate possible late bets
     if index < 3 and random.uniform(0, 1) <= 0.3:
-        sleep_time = MAX_WAIT_TIME + 0.5
+        sleep_time = MAX_WAIT_TIME + 1
         log.log_info("going to be late for {}s".format(sleep_time))
         time.sleep(sleep_time)
 
