@@ -20,6 +20,7 @@ concurrent_bets = Semaphore(MAX_CONCURRENT_BETS)
 # evaluate_bets represents the semaphore that controls when the clients are able to evaluate their bets
 evaluate_bets = Semaphore(0)
 
+
 # bets_closed defines whether the server is closed or open to new bets
 bets_closed: Any = Value("i", 0)
 mutex_beats_closed = Lock()
@@ -45,7 +46,6 @@ bets: List[Any] = [None] * NUM_PLAYERS
 for i in range(NUM_PLAYERS):
     bet = Array("i", AMOUNT_GENERATED_TOTAL)
     bets[i] = bet
-
 mutex_bets = Lock()
 
 
@@ -104,8 +104,8 @@ def check_prizes(
     jackpot = Jackpot(JACKPOT_AMOUNT_FILE, PRIZE1_AMOUNT)
     jackpot_amount = jackpot.get_current_jackpot()
 
-    prize_message = "client-{} got the {} prize: {} €"
     jackpot_message = "client-{} got the jackpot: {} €"
+    prize_message = "client-{} got the {} prize: {} €"
 
     if key.check_prize(otherKey, PRIZE1_NUMBERS, PRIZE1_STARS):
         log.log_info(jackpot_message.format(client_index, jackpot_amount))
