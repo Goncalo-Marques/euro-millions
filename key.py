@@ -32,7 +32,7 @@ class Key:
             n = random.choice(
                 [
                     i
-                    for i in range(self.number_min, self.number_max)
+                    for i in range(self.number_min, self.number_max + 1)
                     if i not in numbers[:]
                 ]
             )
@@ -41,7 +41,11 @@ class Key:
         # generate stars
         for _ in range(self.amount_stars):
             n = random.choice(
-                [i for i in range(self.star_min, self.star_max) if i not in stars[:]]
+                [
+                    i
+                    for i in range(self.star_min, self.star_max + 1)
+                    if i not in stars[:]
+                ]
             )
             stars.append(n)
 
