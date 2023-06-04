@@ -2,7 +2,6 @@ from datetime import datetime
 from multiprocessing import Array, Lock, Process, Semaphore, Value
 import os
 import random
-from threading import Thread
 import time
 from typing import Any, Dict, List
 from configs import *
@@ -355,7 +354,7 @@ def client(index: int) -> None:
 
 if __name__ == "__main__":
     # start the server process
-    server_process = Thread(target=server)
+    server_process = Process(target=server)
     server_process.start()
 
     # start the client processes
