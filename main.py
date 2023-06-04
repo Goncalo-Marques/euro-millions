@@ -294,7 +294,7 @@ def client(index: int) -> None:
     # use the first three players to simulate possible late bets
     if index < 3 and random.uniform(0, 1) <= 0.3:
         sleep_time = MAX_WAIT_TIME + 1
-        log.log_info("going to be late for {}s".format(sleep_time))
+        log.log_info("going to be late for {} s".format(sleep_time))
         time.sleep(sleep_time)
 
     # check if the server is open
