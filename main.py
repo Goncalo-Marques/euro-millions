@@ -10,7 +10,7 @@ from key import Key, get_numbers_from_key, get_stars_from_key
 from logger import Logger
 
 
-# time_now represents the current datetime when the main process started to run
+# time_now_str represents the current datetime when the main process started to run
 time_now_str = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 
 
