@@ -28,13 +28,15 @@ STAR_MAX = 12
 
 # LOGS_FOLDER defines the path of the folder that contains the application logs
 LOGS_FOLDER = "./logs/"
+# JACKPOT_AMOUNT_FILE defines the file that contains the jackpot (accumulated) amount
+JACKPOT_AMOUNT_FILE = "./jackpot.amt"
 
 
 # PRIZE configurations
 PRIZE1_NUMBERS = 5
 PRIZE1_STARS = 2
 PRIZE1_AMOUNT = 17000000
-PRIZE1_AMOUNT_INCREMENT = 100000
+PRIZE1_AMOUNT_INCREMENT = 250000
 
 PRIZE2_NUMBERS = 5
 PRIZE2_STARS = 1

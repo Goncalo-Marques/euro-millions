@@ -15,7 +15,7 @@ class Logger:
         self.folder_path = os.path.join(folder_path, time_now_str)
         self.name = name
 
-        # make sure that the folders for that path exist
+        # make sure that the directories for that path exist
         os.makedirs(self.folder_path, exist_ok=True)
 
     # log writes a new line in the log file for the given type, given message and the current time

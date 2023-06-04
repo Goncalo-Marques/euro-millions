@@ -6,5 +6,6 @@ __pycache__/
 # VS Code stuff
 .vscode/
 
-# Logs
+# Internal directories and files
 logs/
+jackpot.amt

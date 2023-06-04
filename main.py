@@ -5,6 +5,7 @@ from threading import Thread
 import time
 from typing import Any, Dict, List
 from configs import *
+from jackpot import Jackpot
 from key import Key, get_numbers_from_key, get_stars_from_key
 from logger import Logger
 
@@ -96,8 +97,8 @@ def check_prizes(
     key: Key,
     otherKey: List[int],
 ) -> int:
-    # TODO: try get amount from file (1st line)
-    jackpot_amount = PRIZE1_AMOUNT
+    jackpot = Jackpot(JACKPOT_AMOUNT_FILE, PRIZE1_AMOUNT)
+    jackpot_amount = jackpot.get_current_jackpot()
 
     prize_message = "client-{} got the {} prize: {} €"
     jackpot_message = "client-{} got the jackpot: {} €"
@@ -232,11 +233,14 @@ def server() -> None:
     )
 
     # check prizes
+    jackpot = Jackpot(JACKPOT_AMOUNT_FILE, PRIZE1_AMOUNT)
+    jackpot.remove_old_jackpot()
+    jackpot_amount = jackpot.get_current_jackpot()
+
+    log.log_info("current jackpot is {} €".format(jackpot_amount))
+
     count_loss = 0
     jackpot_hit = False
-    # TODO: swap value from the second line (if existent) with the first line and delete the second line
-    # TODO: return the value from the first line of the file
-    jackpot_amount = 0
 
     for i, bet in registered_bets.items():
         prize_won = check_prizes(log, i, key, bet)
@@ -254,16 +258,19 @@ def server() -> None:
                 PRIZE1_AMOUNT
             )
         )
-        # TODO: reset jackpot amount in file
-        # TODO: append default value to file
+
+        # reset jackpot
+        jackpot.set_new_jackpot(PRIZE1_AMOUNT)
     else:
         log.log_info(
             "adding {} € to the jackpot, since no one has won it".format(
                 PRIZE1_AMOUNT_INCREMENT
             )
         )
+
+        # accumulate jackpot
         jackpot_amount += PRIZE1_AMOUNT_INCREMENT
-        # TODO: append new jackpot amount in file
+        jackpot.set_new_jackpot(jackpot_amount)
 
     # allow the clients to evaluate their bets
     set_server_key(key.get_key())
