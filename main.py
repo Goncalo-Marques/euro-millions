@@ -346,22 +346,22 @@ def client(index: int) -> None:
         log.log_info("client-{} did not get any prizes".format(index))
 
 
-# start the server process
-server_process = Thread(target=server)
-server_process.start()
+if __name__ == "__main__":
+    # start the server process
+    server_process = Thread(target=server)
+    server_process.start()
 
-# start the client processes
-client_processes: List[Process] = []
+    # start the client processes
+    client_processes: List[Process] = []
 
+    for i in range(NUM_PLAYERS):
+        process = Process(target=client, args=[i])
+        process.start()
 
-for i in range(NUM_PLAYERS):
-    process = Process(target=client, args=[i])
-    process.start()
+        client_processes.append(process)
 
-    client_processes.append(process)
+    # join processes
+    server_process.join()
 
-# join processes
-server_process.join()
-
-for i in range(NUM_PLAYERS):
-    client_processes[i].join()
+    for i in range(NUM_PLAYERS):
+        client_processes[i].join()
