@@ -11,8 +11,7 @@ class LogType(Enum):
 
 class Logger:
     def __init__(self, folder_path: str, name: str) -> None:
-        time_now_str = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-        self.folder_path = os.path.join(folder_path, time_now_str)
+        self.folder_path = folder_path
         self.name = name
 
         # make sure that the directories for that path exist

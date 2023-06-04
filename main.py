@@ -1,5 +1,6 @@
 from datetime import datetime
 from multiprocessing import Array, Lock, Process, Semaphore, Value
+import os
 import random
 from threading import Thread
 import time
@@ -8,6 +9,10 @@ from configs import *
 from jackpot import Jackpot
 from key import Key, get_numbers_from_key, get_stars_from_key
 from logger import Logger
+
+
+# time_now represents the current datetime when the main process started to run
+time_now_str = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 
 
 # concurrent_bets represents the semaphore that controls the concurrent number of bets
@@ -160,7 +165,8 @@ def check_prizes(
 
 # server executes the server process
 def server() -> None:
-    log = Logger(LOGS_FOLDER, "server")
+    logs_path = os.path.join(LOGS_FOLDER, time_now_str)
+    log = Logger(logs_path, "server")
 
     log.log_info("process initialized")
     log.log_info("starting the betting stage")
@@ -281,7 +287,8 @@ def server() -> None:
 
 # client executes the player process
 def client(index: int) -> None:
-    log = Logger(LOGS_FOLDER, "client-" + str(index))
+    logs_path = os.path.join(LOGS_FOLDER, time_now_str)
+    log = Logger(logs_path, "client-" + str(index))
 
     log.log_info("process initialized")
 
