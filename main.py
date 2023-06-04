@@ -202,7 +202,7 @@ def server() -> None:
             log.log_info("closing the betting stage")
             break
 
-        # check that the maximum waiting time has been reached
+        # check if the maximum waiting time has been reached
         time_since_start = datetime.now() - start_time
         time_since_start = time_since_start.total_seconds()
         if time_since_start >= MAX_WAIT_TIME:
@@ -249,6 +249,7 @@ def server() -> None:
         elif prize_won == 1:
             jackpot_hit = True
 
+    # no prizes were awarded
     if count_loss == len(registered_bets):
         log.log_info("no one has won any prizes")
 
